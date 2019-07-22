@@ -1,4 +1,4 @@
-##TieUp Farming - CSS Task
+## TieUp Farming - CSS Task
 Please slice the mockup in the next page using Semantic UI and build single Component in React.<br/>
 1. Decide how it should look on Desktop.<br/>
 2. Decide how hover, active and selected elements should look.<br/>
