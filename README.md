@@ -9,10 +9,10 @@ Please fork the following repository: https://github.com/tieup-farming/ccs-task 
 Share your solution in your own Github account <b>(DO NOT PUSH ANY PULL REQUEST OR BRANCH)</b>
 
 
+![MockUp](src/mockup.png?raw=true)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-
-![MockUp](src/mockup.png?raw=true)
 
 ## Available Scripts
 
