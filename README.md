@@ -12,7 +12,7 @@ Share your solution in your own Github account <b>(DO NOT PUSH ANY PULL REQUEST 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
-![alt text](https://github.com/tieup-farming/ccs-task/blob/master/mock.png)
+![MockUp](src/mockup.png?raw=true)
 
 ## Available Scripts
 
