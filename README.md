@@ -1,9 +1,11 @@
-## TieUp Farming - CSS Task
+## TieUp Farming - Test Tasks
+
+### Part One. CSS Task. 
 Please slice the following mockup using Semantic UI and build single Component in React.<br/>
 1. Decide how it should look on Desktop.<br/>
 2. Decide how hover, active and selected elements should look.<br/>
 3. Correct visual inaccuracies.
-4. Use css modules.<br/>
+4. Use css modules. No !important in classes<br/>
 
 Please fork the following repository: https://github.com/tieup-farming/ccs-task in order to start.
 Share your solution in your own Github account <b>(DO NOT PUSH ANY PULL REQUEST OR BRANCH)</b>
@@ -11,6 +13,23 @@ Share your solution in your own Github account <b>(DO NOT PUSH ANY PULL REQUEST 
 
 ![MockUp](src/mockup.png?raw=true)
 
+### Part Two. React Task. 
+Please extend previous part with following functionality.
+ 
+1. Add validations to the form fields. It should be generic solution for Semantic UI:<br>
+    a) required fields;<br>
+    b) Positive floats;<br>
+    c) Errors should be displayed near target fields.
+
+2. Add Calendar and possibility to add Date manually.
+
+3. Calculate Trees/Ha, Thees/Vines and Age:<br>
+    Trees/Ha = 10000 / rowSpacing / treesSpacing<br>
+    Thees/Vines = blockSize * Trees/Ha<br>
+    Age = Full years from Date of Planting
+    
+4. Prepare form data in ready to send single Object.    
+## 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
