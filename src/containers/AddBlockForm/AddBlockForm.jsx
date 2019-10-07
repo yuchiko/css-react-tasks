@@ -19,17 +19,23 @@ class AddBlockForm extends React.Component {
       treeSpacing: '',
       actualTrees: 0,
       age: 0,
-
+      status: '',
+      ...this.defaultErrorsState
+    };
+    this.defaultErrorsState = {
       blockNameError: false,
       blockSizeError: false,
       cropError: false,
       noRowsError: false,
       rowSpacingError: false,
       treeSpacingError: false,
-    };
+      actualTreesError: false,
+      statusError: false
+    }
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
+    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   onFieldChange(event, data) {
@@ -45,6 +51,13 @@ class AddBlockForm extends React.Component {
     this.setState({ date: value });
   }
 
+  handleStatusChange(event, { value }) {
+    this.setState({
+      statusError: false,
+      status: value
+    });
+  }
+
   onFormSubmit() {
     const {
       blockName,
@@ -52,18 +65,13 @@ class AddBlockForm extends React.Component {
       crop,
       noRows,
       rowSpacing,
-      treeSpacing
+      treeSpacing,
+      actualTrees,
+      status
     } = this.state;
 
-    // TODO: move this default state somewhere
-    // set default state
     this.setState({
-      blockNameError: false,
-      blockSizeError: false,
-      cropError: false,
-      noRowsError: false,
-      rowSpacingError: false,
-      treeSpacingError: false,
+      ...this.defaultErrorsState
     });
     if (!blockName) this.setState({blockNameError : { content: 'Please enter your block name' }});
     if (!blockSize) {
@@ -76,6 +84,8 @@ class AddBlockForm extends React.Component {
     if (!noRows) this.setState({ noRowsError: { content: 'Please enter your no.rows' } });
     if (!rowSpacing) this.setState({ rowSpacingError: { content: 'Please enter your row spacing' } });
     if (!treeSpacing) this.setState({ treeSpacingError: { content: 'Please enter your tree spacing' } });
+    if (!actualTrees) this.setState({ actualTreesError: { content: 'Please enter your actual no. trees' } });
+    if (!status) this.setState({ statusError: { content: 'Please pick a status' } });
 
     // prepared object to send
     console.log({...this.state});
@@ -160,7 +170,6 @@ class AddBlockForm extends React.Component {
                   <Input
                     name='rowSpacing'
                     onChange={this.onFieldChange}
-                    error={this.state.rowSpacingError}
                     type='number'
                     placeholder='in meters'
                     label='m'
@@ -180,7 +189,6 @@ class AddBlockForm extends React.Component {
                   <Input
                     name='treeSpacing'
                     onChange={this.onFieldChange}
-                    error={this.state.treeSpacingError}
                     type='number'
                     placeholder='in meters'
                     label='m'
@@ -202,16 +210,28 @@ class AddBlockForm extends React.Component {
               </Grid.Column>
               <Grid.Column only='computer'>
                 <Form.Field required>
-                  <label>Actual No. of Trees</label>
-                  <input />
+                  <Form.Input
+                    label='Actual No. of Trees'
+                    name='actualTrees'
+                    required
+                    onChange={this.onFieldChange}
+                    error={this.state.actualTreesError}
+                  >
+                  </Form.Input>
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row only='mobile tablet'>
               <Grid.Column width='8'>
                 <Form.Field required>
-                  <label>Actual No. of Trees</label>
-                  <input />
+                  <Form.Input
+                    label='Actual No. of Trees'
+                    name='actualTrees'
+                    required
+                    onChange={this.onFieldChange}
+                    error={this.state.actualTreesError}
+                  >
+                  </Form.Input>
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
@@ -234,20 +254,39 @@ class AddBlockForm extends React.Component {
                 <Form.Field label='Age' readOnly control='input' type='number' value={this.state.age}/>
               </Grid.Column>
               <Grid.Column only='computer'>
-                <Form.Field required>
+                <Form.Field
+                  className={this.state.statusError ? 'error' : ''}
+                  required>
                   <label>Farm Status</label>
                   <Select
                     value={this.state.status}
                     placeholder='Select your farm status'
+                    onChange={this.handleSelectChange}
                     options={STATUSES} />
+                  {this.state.statusError ? (
+                    <Label pointing prompt>
+                      {this.state.statusError.content}
+                    </Label>
+                  ) : ''}
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row only='mobile tablet'>
               <Grid.Column width='8'>
-                <Form.Field required>
+                <Form.Field
+                  className={this.state.statusError ? 'error' : ''}
+                  required>
                   <label>Farm Status</label>
-                  <Select placeholder='Select your farm status' options={STATUSES} />
+                  <Select
+                    value={this.state.status}
+                    placeholder='Select your farm status'
+                    onChange={this.handleStatusChange}
+                    options={STATUSES} />
+                  {this.state.statusError ? (
+                    <Label pointing prompt>
+                      {this.state.statusError.content}
+                    </Label>
+                  ) : ''}
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
