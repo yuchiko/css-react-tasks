@@ -1,49 +1,136 @@
 import React from 'react';
-import { Input, Header, Grid, Form, Container, Select, TextArea, Message, GridColumn } from 'semantic-ui-react';
+import { Label, Input, Header, Grid, Form, Container, Select, TextArea, Message, GridColumn } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
-import { STATUSES, DATE_FORMAT } from '../../constants/';
+import { STATUSES, DATE_FORMAT, CROPS_LIST } from '../../constants/';
+import { isPositiveFloat } from '../../helpers/';
 import PageHeader from '../../components/PageHeader/';
+import RadioButtons from '../../components/RadioButtons';
 
 class AddBlockForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      blockName: '',
+      blockSize: 0,
+      crop: '',
       date: '',
-      age: 0
+      noRows: '',
+      rowSpacing: '',
+      treeSpacing: '',
+      actualTrees: 0,
+      age: 0,
+
+      blockNameError: false,
+      blockSizeError: false,
+      cropError: false,
+      noRowsError: false,
+      rowSpacingError: false,
+      treeSpacingError: false,
     };
-    // this.handleChange = this.handleChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
     this.handleCalendarChange = this.handleCalendarChange.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
+  }
+
+  onFieldChange(event, data) {
+    const { target } = event;
+    const { name, value } = data || target;
+
+    this.setState({
+      [name]: value
+    });
   }
 
   handleCalendarChange(event, {value}) {
     this.setState({ date: value });
   }
 
+  onFormSubmit() {
+    const {
+      blockName,
+      blockSize,
+      crop,
+      noRows,
+      rowSpacing,
+      treeSpacing
+    } = this.state;
+
+    // TODO: move this default state somewhere
+    // set default state
+    this.setState({
+      blockNameError: false,
+      blockSizeError: false,
+      cropError: false,
+      noRowsError: false,
+      rowSpacingError: false,
+      treeSpacingError: false,
+    });
+    if (!blockName) this.setState({blockNameError : { content: 'Please enter your block name' }});
+    if (!blockSize) {
+      this.setState({ blockSizeError: { content: 'Please enter your block size' } });
+    } else if(!isPositiveFloat(+blockSize)) {
+      this.setState({ blockSizeError: { content: 'Please enter positive float' } });
+    }
+    if (!crop) this.setState({ cropError: true });
+
+    if (!noRows) this.setState({ noRowsError: { content: 'Please enter your no.rows' } });
+    if (!rowSpacing) this.setState({ rowSpacingError: { content: 'Please enter your row spacing' } });
+    if (!treeSpacing) this.setState({ treeSpacingError: { content: 'Please enter your tree spacing' } });
+
+    // prepared object to send
+    console.log({...this.state});
+  }
+
   render() {
     return (
       <Container>
-        <PageHeader></PageHeader>
+        <PageHeader onFormSubmit={this.onFormSubmit}></PageHeader>
         <Form>
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column>
                 <Form.Field required>
-                  <label>Block name</label>
-                  <input />
+                  <Form.Input
+                    label='Block name'
+                    name='blockName'
+                    required
+                    onChange={this.onFieldChange}
+                    error={this.state.blockNameError}
+                    >
+                  </Form.Input>
                 </Form.Field>
               </Grid.Column>
               <Grid.Column>
                 <Form.Field required>
-                  <label>Block's size</label>
-                  <input />
+                  <Form.Input
+                    label="Block's size"
+                    name='blockSize'
+                    type='number'
+                    required
+                    onChange={this.onFieldChange}
+                    error={this.state.blockSizeError}
+                  >
+                  </Form.Input>
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <Form.Field required>
+                <Form.Field
+                  required
+                  className="label--left">
                   <label>Select your crop</label>
+                  <RadioButtons
+                    onChange={this.onFieldChange}
+                    name='crop'
+                    value={this.state.crop}
+                    data={CROPS_LIST}
+                  />
+                  {this.state.cropError ? (
+                  <Label pointing prompt>
+                    Please select your crop
+                  </Label>
+                  ) : ''}
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
@@ -55,28 +142,54 @@ class AddBlockForm extends React.Component {
             <Grid.Row columns={3}>
               <Grid.Column>
                 <Form.Field required>
-                  <label>No. Rows</label>
-                  <input />
+                  <Form.Input
+                    label='No. Rows'
+                    name='noRows'
+                    required
+                    onChange={this.onFieldChange}
+                    error={this.state.noRowsError}
+                  >
+                  </Form.Input>
                 </Form.Field>
               </Grid.Column>
               <Grid.Column>
-                <Form.Field required>
+                <Form.Field
+                  className={this.state.rowSpacingError ? 'error' : ''}
+                  required>
                   <label>Row spacing</label>
                   <Input
+                    name='rowSpacing'
+                    onChange={this.onFieldChange}
+                    error={this.state.rowSpacingError}
                     type='number'
                     placeholder='in meters'
                     label='m'
                     labelPosition='right'/>
+                    {this.state.rowSpacingError ? (
+                    <Label pointing prompt>
+                      {this.state.rowSpacingError.content}
+                    </Label>
+                  ) : ''}
                 </Form.Field>
               </Grid.Column>
               <Grid.Column>
-                <Form.Field required>
+                <Form.Field
+                  className={this.state.treeSpacingError ? 'error' : ''}
+                  required>
                   <label>Tree spacing</label>
                   <Input
+                    name='treeSpacing'
+                    onChange={this.onFieldChange}
+                    error={this.state.treeSpacingError}
                     type='number'
                     placeholder='in meters'
                     label='m'
                     labelPosition='right' />
+                  {this.state.treeSpacingError ? (
+                    <Label pointing prompt>
+                      {this.state.treeSpacingError.content}
+                    </Label>
+                  ) : ''}
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
@@ -123,7 +236,10 @@ class AddBlockForm extends React.Component {
               <Grid.Column only='computer'>
                 <Form.Field required>
                   <label>Farm Status</label>
-                  <Select placeholder='Select your farm status' options={STATUSES} />
+                  <Select
+                    value={this.state.status}
+                    placeholder='Select your farm status'
+                    options={STATUSES} />
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>

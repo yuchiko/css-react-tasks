@@ -77,9 +77,9 @@ input:read-only,
   font-weight: 600;
 }
 
-.ui.form .required.fields:not(.grouped)>.field>label:after,
-.ui.form .required.fields.grouped>label:after,
-.ui.form .required.field>label:after {
+.ui.form .required.fields:not(.grouped) > .field>label:after,
+.ui.form .required.fields.grouped > label:after,
+.ui.form .required.field:not(.label--left)>label:after {
   float: right;
 }
 
