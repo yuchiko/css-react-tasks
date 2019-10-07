@@ -1,0 +1,96 @@
+a {
+  color: var(--link-color);
+}
+
+h2.ui.header {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
+  color: #373737;
+}
+
+h3.ui.header {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 400;
+  color: #51535C;
+}
+
+input:read-only,
+.ui .form .field input:read-only,
+.ui .form .field input:read-only:focus {
+  background: var(--disabled-input-bg);
+  color: var(--disabled-input-color);
+  border-color: var(--disabled-input-bg);
+}
+
+.ui.form .field input:read-only {
+  cursor: auto;
+}
+
+.ui.form .field input:read-only:focus {
+  border-color: var(--input-border-color);
+}
+
+.ui.form .field input:not(:read-only),
+.ui.form .field textarea,
+.ui.selection.dropdown > .text:not(.default){
+  font-family: var(--font-heading);
+  color: var(--input-color);
+  font-weight: 600;
+}
+
+.ui.form .field input:not(:read-only)::placeholder,
+.ui.form .field textarea::placeholder {
+  font-family: var(--font-text);
+  font-weight: 400;
+  opacity: 0.25;
+}
+
+.ui.form .field input:not(:read-only):focus,
+.ui.form .field textarea:not(:read-only):focus,
+.ui.selection.active.dropdown,
+.ui.selection.active.dropdown:hover,
+.ui.selection.active.dropdown .menu,
+.ui.selection.active.dropdown:hover .menu {
+  border-color: var(--active-control-border);
+}
+
+.ui.form textarea {
+  resize: none;
+}
+
+.ui.selection.dropdown {
+  border-radius: 20px;
+}
+
+.ui.form .fields .field .ui.input input,
+.ui.form .field .ui.input input {
+  width: 100%;
+  flex: 1;
+}
+
+.ui.form .field > label {
+  font-family: var(--font-heading);
+  color: var(--label-color);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ui.form .required.fields:not(.grouped)>.field>label:after,
+.ui.form .required.fields.grouped>label:after,
+.ui.form .required.field>label:after {
+  float: right;
+}
+
+.ui.button.secondary {
+  background-color: var(--button-secondary-color);
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 15px 32px;
+}
+
+.ui.button.secondary:hover {
+  background-color: var(--button-secondary-color-hover);
+}

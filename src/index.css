@@ -1,4 +1,23 @@
-body {
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600|Open+Sans:400,700&display=swap&subset=cyrillic-ext');
 
+:root {
+  --button-secondary-color: #6A6A6A;
+  --button-secondary-color-hover: #464646;
+  --link-color: #0C0033;
+
+  --label-color: #87819A;
+  --input-color: #0C0033;
+  --input-placeholder-color: #C3C0CD;
+  --input-border-color: #C3BFCC;
+
+  --input-label-block-bg: #E8E6EB;
+  --input-label-block-color: #93939B;
+
+  --disabled-input-bg: #E7E5EB;
+  --disabled-input-color:#B0ABBD;
+
+  --active-control-border: #4000FF;
+
+  --font-heading: 'Montserrat', sans-serif;
+  --font-text: 'Open Sans', sans-serif;
 }
-
