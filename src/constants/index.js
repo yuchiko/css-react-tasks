@@ -45,5 +45,5 @@ export const CROPS_LIST = [
 ];
 
 
-export const DATE_FORMAT = "DD  /  MM  /  YYYY";
+export const DATE_FORMAT = "DD/MM/YYYY";
 export const FIELD_EMPTY_ERROR = 'This field is required!';

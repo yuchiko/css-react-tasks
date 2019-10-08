@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Label, Input, Header, Grid, Form, Container, Select, TextArea, Message, GridColumn } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
 import { STATUSES, DATE_FORMAT, CROPS_LIST } from '../../constants/';
@@ -16,10 +17,12 @@ class AddBlockForm extends React.Component {
       date: '',
       noRows: '',
       rowSpacing: '',
-      treeSpacing: '',
+      treesSpacing: '',
       actualTrees: 0,
+      treesVines: 0,
       age: 0,
       status: '',
+      treesHa: 0,
       ...this.defaultErrorsState
     };
     this.defaultErrorsState = {
@@ -28,7 +31,7 @@ class AddBlockForm extends React.Component {
       cropError: false,
       noRowsError: false,
       rowSpacingError: false,
-      treeSpacingError: false,
+      treesSpacingError: false,
       actualTreesError: false,
       statusError: false
     }
@@ -36,6 +39,10 @@ class AddBlockForm extends React.Component {
     this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
+    this.updateComputedFields = this.updateComputedFields.bind(this);
+    this.updateTreesHa = this.updateTreesHa.bind(this)
+    this.updateTreesVines = this.updateTreesVines.bind(this)
+    this.updateAge = this.updateAge.bind(this)
   }
 
   onFieldChange(event, data) {
@@ -45,10 +52,47 @@ class AddBlockForm extends React.Component {
     this.setState({
       [name]: value
     });
+    this.updateComputedFields()
   }
+
+  updateComputedFields() {
+    this.updateTreesHa();
+    this.updateTreesVines();
+  }
+
+  updateTreesHa() {
+    const { rowSpacing, treesSpacing } = this.state
+
+    const treesHa = rowSpacing && treesSpacing
+      ? 10000 / this.state.rowSpacing / this.state.treesSpacing
+      : 0
+    this.setState({ treesHa })
+    return treesHa
+  }
+
+  updateTreesVines() {
+    const { blockSize, treesHa } = this.state
+    const treesVines = blockSize && treesHa
+      ? blockSize * treesHa
+      : 0
+    this.setState({ treesVines })
+    return treesVines
+  }
+
+  updateAge(dateValue) {
+    const date = moment(dateValue, DATE_FORMAT, true);
+    const valid = date.isValid();
+    const diff = moment().diff(date, 'years');
+
+    const age = valid && !isNaN(diff) ? diff : 0;
+    this.setState({ age })
+    return age
+  }
+
 
   handleCalendarChange(event, {value}) {
     this.setState({ date: value });
+    this.updateAge(value);
   }
 
   handleStatusChange(event, { value }) {
@@ -65,7 +109,7 @@ class AddBlockForm extends React.Component {
       crop,
       noRows,
       rowSpacing,
-      treeSpacing,
+      treesSpacing,
       actualTrees,
       status
     } = this.state;
@@ -83,7 +127,7 @@ class AddBlockForm extends React.Component {
 
     if (!noRows) this.setState({ noRowsError: { content: 'Please enter your no.rows' } });
     if (!rowSpacing) this.setState({ rowSpacingError: { content: 'Please enter your row spacing' } });
-    if (!treeSpacing) this.setState({ treeSpacingError: { content: 'Please enter your tree spacing' } });
+    if (!treesSpacing) this.setState({ treesSpacingError: { content: 'Please enter your tree spacing' } });
     if (!actualTrees) this.setState({ actualTreesError: { content: 'Please enter your actual no. trees' } });
     if (!status) this.setState({ statusError: { content: 'Please pick a status' } });
 
@@ -183,19 +227,19 @@ class AddBlockForm extends React.Component {
               </Grid.Column>
               <Grid.Column>
                 <Form.Field
-                  className={this.state.treeSpacingError ? 'error' : ''}
+                  className={this.state.treesSpacingError ? 'error' : ''}
                   required>
                   <label>Tree spacing</label>
                   <Input
-                    name='treeSpacing'
+                    name='treesSpacing'
                     onChange={this.onFieldChange}
                     type='number'
                     placeholder='in meters'
                     label='m'
                     labelPosition='right' />
-                  {this.state.treeSpacingError ? (
+                  {this.state.treesSpacingError ? (
                     <Label pointing prompt>
-                      {this.state.treeSpacingError.content}
+                      {this.state.treesSpacingError.content}
                     </Label>
                   ) : ''}
                 </Form.Field>
@@ -203,10 +247,20 @@ class AddBlockForm extends React.Component {
             </Grid.Row>
             <Grid.Row columns='equal'>
               <Grid.Column>
-                <Form.Field label='Trees/Ha' control='input' readOnly/>
+                <Form.Field
+                  name='treesHa'
+                  value={this.state.treesHa}
+                  label='Trees/Ha'
+                  control='input'
+                  readOnly/>
               </Grid.Column>
               <Grid.Column>
-                <Form.Field label='Trees/Vines' control='input' readOnly/>
+                <Form.Field
+                  name='treesVines'
+                  value={this.state.treesVines}
+                  label='Trees/Vines'
+                  control='input'
+                  readOnly/>
               </Grid.Column>
               <Grid.Column only='computer'>
                 <Form.Field required>
@@ -251,7 +305,13 @@ class AddBlockForm extends React.Component {
                 </Form.Field>
               </Grid.Column>
               <Grid.Column>
-                <Form.Field label='Age' readOnly control='input' type='number' value={this.state.age}/>
+                <Form.Field
+                  name='age'
+                  label='Age'
+                  readOnly
+                  control='input'
+                  type='number'
+                  value={this.state.age}/>
               </Grid.Column>
               <Grid.Column only='computer'>
                 <Form.Field
