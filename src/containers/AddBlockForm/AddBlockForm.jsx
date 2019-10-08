@@ -321,7 +321,7 @@ class AddBlockForm extends React.Component {
                   <Select
                     value={this.state.status}
                     placeholder='Select your farm status'
-                    onChange={this.handleSelectChange}
+                    onChange={this.handleStatusChange}
                     options={STATUSES} />
                   {this.state.statusError ? (
                     <Label pointing prompt>
